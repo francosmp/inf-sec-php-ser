@@ -3,7 +3,7 @@
 require_once('./coneccion.php');
 
 // Create a query for the database
-$query = "SELECT id, codigo FROM prueba";
+$query = "SELECT id, codigo FROM crud";
 
 // Get a response from the database by sending the connection
 // and the query
