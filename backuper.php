@@ -7,7 +7,7 @@ header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 header('Content-Type: application/json');
 
 $peticion = json_decode(file_get_contents("php://input"), true);
-$tipoPeticion = $peticion["backup"];
+$serverBackUp = $peticion["url"];
 
 unlink("C:/xampp/htdocs/inf-sec-php-ser/test.sql") or die("Couldn't delete file");
 
@@ -17,7 +17,7 @@ $cf = curl_init();
 $cfile = new CURLFile('C:/xampp/htdocs/inf-sec-php-ser/test.sql', 'text/sql', 'test');
 $data = array("archivo" => $cfile);
 
-curl_setopt($cf, CURLOPT_URL, "http://localhost/inf-sec-php-ser/recibir.php"); // me lo envia a mi
+curl_setopt($cf, CURLOPT_URL, $serverBackUp); // me lo envia a mi
 curl_setopt($cf, CURLOPT_POST, true);
 curl_setopt($cf, CURLOPT_POSTFIELDS, $data);
 
