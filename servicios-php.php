@@ -14,6 +14,21 @@ $tipoPeticion = $peticion["crud"];
 $respuestaFinal;
 $datos = array();
 
+$espejo = "";
+
+if ($espejo != "") {
+    if ($tipoPeticion != "read") {
+        $ch = curl_init($espejo);
+        $payload = json_encode($peticion);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+    }
+}
+
 switch ($tipoPeticion) {
 
     case "create":
@@ -98,23 +113,23 @@ switch ($tipoPeticion) {
 
         if ($response == TRUE) {
             $respuestaFinal = "Successfully updated";
-        }else{
+        } else {
             $respuestaFinal = "There was an error updating" . mysqli_error($response);
         }
 
         break;
-    
+
     case "delete":
 
         /* Delete */
-        
-        $query = "DELETE FROM crud ORDER BY id DESC LIMIT 1";        
+
+        $query = "DELETE FROM crud ORDER BY id DESC LIMIT 1";
 
         $response = @mysqli_query($dbc, $query);
 
         if ($response == TRUE) {
             $respuestaFinal = "Successfully deleted";
-        }else{
+        } else {
             $respuestaFinal = "There was an error deleting" . mysqli_error($response);
         }
 
