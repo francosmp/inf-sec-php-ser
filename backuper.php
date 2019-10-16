@@ -6,13 +6,25 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 header('Content-Type: application/json');
 
-require_once('./backUpClass.php');
-
 $peticion = json_decode(file_get_contents("php://input"), true);
 $tipoPeticion = $peticion["backup"];
 
-$respuestaFinal = "{\"backup\": \"ok\"}";
+unlink("C:/xampp/htdocs/inf-sec-php-ser/test.sql") or die("Couldn't delete file");
 
-/* Devolver JSON */
+require_once('./backUpClass.php');
 
-echo $respuestaFinal;
+$cf = curl_init();
+$cfile = new CURLFile('C:/xampp/htdocs/inf-sec-php-ser/test.sql', 'text/sql', 'test');
+$data = array("archivo" => $cfile);
+
+curl_setopt($cf, CURLOPT_URL, "http://localhost/inf-sec-php-ser/recibir.php"); // me lo envia a mi
+curl_setopt($cf, CURLOPT_POST, true);
+curl_setopt($cf, CURLOPT_POSTFIELDS, $data);
+
+$response = curl_exec($cf);
+
+if ($response == true) {
+    echo "{\"backup\": \"Backup Succesfully\"}";;
+} else {
+    echo "{\"backup\": \"Error\"}";;
+}

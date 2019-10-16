@@ -207,7 +207,7 @@ class Backup_Database
                 mkdir($this->backupDir, 0777, true);
             }
 
-            file_put_contents($this->backupDir . '/' . $this->backupFile, $sql, FILE_APPEND | LOCK_EX);
+            file_put_contents($this->backupDir . '/' . $this->backupFile, $sql, FILE_APPEND | LOCK_EX );
         } catch (Exception $e) {
             print_r($e->getMessage());
             return false;
